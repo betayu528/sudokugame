@@ -1,13 +1,11 @@
 #ifndef SUDOKU
 #define SUDOKU
 
-#include <stdio.h>
 /**
  * @brief The Sudoku class
  * 封装数独的核心算法
  * 包括生成题目的回溯算法以及求解算法
  */
-
 class Sudoku
 {
 public:
@@ -18,8 +16,6 @@ public:
     void initialize(int table[9][9]);
 
     bool checkSolution(int answer[9][9]);
-
-    //检查一个一维数组是否刚好由1~9组成
     bool isvalidOfArray(int array[9]);
     void makeLevel(int table[9][9], int blankGridNum);
     void copyArray(int srcArray[9][9], int dstArray[9][9]);
@@ -27,14 +23,10 @@ public:
 private:
     void initsudoku();
     int  initialState(int i, int j);
-
     bool tryfill(int i, int j, int k);
-
     void next(int &x, int &y);
     void previous(int &x, int &y);
-
     void genRandom(int line[]);
-
     bool parseState(int i, int j);
     void clear();
 

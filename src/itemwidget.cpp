@@ -1,6 +1,8 @@
 #include "itemwidget.h"
 #include "optiondialog.h"
+
 #include <QDebug>
+
 
 ItemWidget::ItemWidget(qint8 number)
     :_is_editable(true)

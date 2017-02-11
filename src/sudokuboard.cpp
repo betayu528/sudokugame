@@ -1,11 +1,13 @@
 #include "sudokuboard.h"
 #include "sudoku.h"
 #include "itemwidget.h"
+
 #include <QLayout>
 #include <QPushButton>
 #include <QPainter>
 #include <QDebug>
 #include <QGroupBox>
+
 
 SudokuBoard::SudokuBoard(QWidget *parent)
     :QFrame(parent)

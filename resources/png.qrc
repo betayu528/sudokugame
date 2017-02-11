@@ -1,14 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/N1.png</file>
-        <file>images/N2.png</file>
-        <file>images/N3.png</file>
-        <file>images/N4.png</file>
-        <file>images/N5.png</file>
-        <file>images/N6.png</file>
-        <file>images/N7.png</file>
-        <file>images/N8.png</file>
-        <file>images/N9.png</file>
         <file>images/sudoku.ico</file>
         <file>skins/qss.txt</file>
         <file>skins/simpleqss.txt</file>

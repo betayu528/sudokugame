@@ -1,13 +1,11 @@
 #include "sudoku.h"
-#include <QTime>
-#include <QLinkedList>
-#include <QPoint>
 
+#include <QTime>
+#include <QPoint>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <time.h>
-#include <QHash>
+
 
 Sudoku::Sudoku()
 {
@@ -39,7 +37,6 @@ void Sudoku::genRandom(int line[])
     }
 
 }
-
 
 /**
  * @brief Sudoku::initialState
@@ -196,7 +193,7 @@ void Sudoku::initsudoku()
    int marks[9][9][9] = { { {0} } }; //hash标记数组 marks[i][j][k] = 1表示（i，j）填 k + 1已经尝试过
 
    for (;;) {
-       if (row == 9 && row == 9) {
+       if (row == 9 && row == 9) { //生成局面成功
            return;
        }
 
@@ -204,8 +201,7 @@ void Sudoku::initsudoku()
        genRandom(ranNums);
 
        bool fill_row_success = false;
-       int k = 0;
-       for (; k < 9; ++k) {
+       for (int k = 0; k < 9; ++k) {
             if (marks[row][col][ranNums[k] - 1] != 0) {
                 continue;
             }
@@ -222,7 +218,7 @@ void Sudoku::initsudoku()
                marks[row][col][i] = 0; //重置状态
            }
 
-           previous(row, col); //迭代后两个值都会发生变化
+           previous(row, col); // 回溯, 迭代后两个值都会发生变化
            if (_table[row][col] != 0) {
                 marks[row][col][_table[row][col] - 1] = 1; //已尝试过，标记
            }
@@ -234,32 +230,6 @@ void Sudoku::initsudoku()
        }
    }
 }
-
-/**
-static void Input_solution()
-{
-    int i,j;
-    char input[9+1];
-    printf("输入9行数独数组,未知的位置用0表示:\n");
-    for (i = 0; i < 9; i++)
-    {
-        memset(input, 0x00, sizeof(input));
-        printf("第%d行:",i+1);
-        scanf("%s", input);
-        for (j = 0; j < 9; j ++)
-        {
-            if (input[j] > '0' && input[j] <= '9')
-            {
-                _solution[i][j] = input[j] - '0';
-            }
-            else
-            {   //非数字和0统认为是未知位置
-                _solution[i][j] = 0;
-            }
-        }
-    }
-}
-*/
 
 /**
  * @brief Sudoku::parseState 递归法求解答案
@@ -353,6 +323,7 @@ void Sudoku::initialize(int table[9][9])
     //copy
     copyArray(_table, table);
 }
+
 /**
  * @brief Sudoku::copyArray
  *        二维整型数组的复制函数
@@ -369,30 +340,6 @@ void Sudoku::copyArray(int srcArray[9][9], int dstArray[9][9])
         }
     }
 }
-
-/**
-void Sudoku::makeLevel(int table[9][9][10], int blankGridNum)
-{
-    for (int n = 0;n < blankGridNum;) {
-        int L = rand() % 9;
-        int R = rand() % 9;
-        if (table[L][R][0] != 0) {
-            //index = table[L][R][0];
-            table[L][R][0] = 0;
-            if (this->getSolution(table, _solution) == 1) {
-                ++n;
-                _tableBackup[L][R] = 0;
-            } else {
-                for (L = 0;L < 9;++L) {
-                    for (R = 0;R < 9;++R) {
-                        table[L][R][0] = _tableBackup[L][R];
-                    }
-                }
-            }
-        }
-    }
-}
-**/
 
 /**
  * @brief Sudoku::getSolution
@@ -494,7 +441,7 @@ void Sudoku::makeLevel(int table[9][9], int blankGridNum)
 
 /**
  * @brief Sudoku::clear
- * 将本地的table清0
+ * 将本地的 table 清0
  */
 void Sudoku::clear()
 {

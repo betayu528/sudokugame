@@ -1,10 +1,12 @@
 #include "mainwindow.h"
-#include <QApplication>
 #include "loghandler.h"
+
+#include <QApplication>
 #include <QTextCodec>
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
+
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context,
                          const QString &msg)

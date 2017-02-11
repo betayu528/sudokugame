@@ -1,8 +1,10 @@
 #include "loghandler.h"
+
 #include <QTextStream>
 #include <QFile>
 #include <QDebug>
 #include <QMessageBox>
+
 
 LogHandler LogHandler::_handler;
 

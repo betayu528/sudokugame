@@ -1,9 +1,6 @@
 #ifndef BOARD
 #define BOARD
 
-
-#include "subwidget33.h"
-
 #include <QFrame>
 
 class QGroupBox;

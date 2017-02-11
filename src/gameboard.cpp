@@ -11,6 +11,7 @@
 #include <QComboBox>
 #include <QLabel>
 
+
 GameBoard::GameBoard(QWidget *parent)
     :QWidget(parent)
 {
@@ -169,7 +170,6 @@ void GameBoard::clearAnswer()
 {
     _sudoku_board->clearAnswer();
 }
-
 
 void GameBoard::switchLevel()
 {
