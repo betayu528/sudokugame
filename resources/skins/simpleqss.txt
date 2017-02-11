@@ -1,0 +1,8 @@
+
+ItemWidget{
+        font: 25pt "STXinwei";
+}
+
+QPushButton:hover {
+    background-color: rgb(165, 174, 255);
+}
