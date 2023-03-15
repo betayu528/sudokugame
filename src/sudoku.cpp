@@ -1,3 +1,7 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
+
 #include "sudoku.h"
 
 #include <QTime>
@@ -26,7 +30,6 @@ void Sudoku::genRandom(int line[])
     }
     for (int i = 0; i < 9; ++i) {
         int pos = rand() % (9 - i); // 随机产生一个下标， 让它和第9 - i个数字交换
-        //printf("%d ", pos);
         if (pos == 8 - i) {
             continue;
         } else {
@@ -365,7 +368,7 @@ bool Sudoku::getSolution(int question[9][9], int answer[9][9])
 bool Sudoku::checkSolution(int answer[9][9])
 {
     //row check
-    for (int i = 0;i < 9;++i) {
+    for (int i = 0;i < 9; ++i) {
         if (!isvalidOfArray(answer[i])) {
             return false;
         }
@@ -373,8 +376,8 @@ bool Sudoku::checkSolution(int answer[9][9])
 
     //reverse: 将二维数组作转置
     int temp_array[9][9];//临时数组， 为了不改变原数组的值
-    for (int i = 0;i < 9;++i) {
-        for (int j = 0;j < 9;++j) {
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0;j < 9; ++j) {
             temp_array[i][j] = answer[j][i];
         }
     }

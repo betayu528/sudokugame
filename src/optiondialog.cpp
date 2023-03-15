@@ -1,3 +1,6 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
 #include "optiondialog.h"
 #include <QPushButton>
 #include <QGroupBox>

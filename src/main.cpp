@@ -1,3 +1,6 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
 #include "mainwindow.h"
 #include "loghandler.h"
 
@@ -7,6 +10,14 @@
 #include <QDebug>
 #include <QTextStream>
 
+/**
+ * @brief 消息处理器，这里会把消息重定向到日志文件中
+ * @param type
+ * @param context
+ * @param msg
+ * @author cdhmuer333@126.com
+ * @
+ */
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context,
                          const QString &msg)
@@ -31,7 +42,6 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context,
            localMsg = "[FETAL]" + localMsg;
            abort();
        }
-       //重定向消息输出到日志文件中
        QMetaObject::invokeMethod(LogHandler::instance(), "logMessage",
                                  Qt::QueuedConnection,
                                  Q_ARG(QByteArray, localMsg));

@@ -1,3 +1,6 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
 #include "sudokuboard.h"
 #include "sudoku.h"
 #include "itemwidget.h"
@@ -16,7 +19,7 @@ SudokuBoard::SudokuBoard(QWidget *parent)
     resize(420, 420);
     _blankGridNum = 15; // default setting
     _sudoku = new Sudoku();
-    setEnabled(false);//点开始游戏之后才能填入数字
+    setEnabled(false); //点开始游戏之后才能填入数字
     setToolTip("请点击开始游戏, 开始挑战");
     _glayout = NULL;
     init();

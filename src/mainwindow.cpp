@@ -1,3 +1,7 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
+
 #include "mainwindow.h"
 #include "gameboard.h"
 

@@ -1,3 +1,6 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
 #include "gameboard.h"
 #include "sudokuboard.h"
 
@@ -151,6 +154,7 @@ void GameBoard::updateTimer()
 {
     _iTimeMinute = 0;
     _iTimeSecond = 0;
+    updateTimeWidget();
 }
 
 void GameBoard::finished()

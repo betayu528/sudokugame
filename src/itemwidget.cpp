@@ -1,3 +1,7 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
+
 #include "itemwidget.h"
 #include "optiondialog.h"
 

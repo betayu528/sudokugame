@@ -1,3 +1,7 @@
+/**
+* Author: by cdhmuer333@126.com
+*/
+
 #include "loghandler.h"
 
 #include <QTextStream>
@@ -28,6 +32,5 @@ void LogHandler::logMessage(const QByteArray& localMsg)
     QTextStream s(&file);
     s << localMsg << "\n";
     file.close();
-    //QMessageBox::information(0, "helloloo", localMsg, QMessageBox::Ok); //Debug box
 }
 
