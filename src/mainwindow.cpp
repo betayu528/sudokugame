@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Author: by cdhmuer333@126.com
 */
 
@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     //resize(680, 500);
     srand((unsigned)(time(NULL)));
     setMinimumSize(700, 500);
-    setWindowIcon(QIcon(":/images/sudoku.icon"));
+    setWindowIcon(QIcon(":/images/sudoku.ico"));
     GameBoard * gameBoard = new GameBoard(this);
     connect(gameBoard, SIGNAL(gameOver()), this, SLOT(close()));
     setCentralWidget(gameBoard);

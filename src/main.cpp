@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Author: by cdhmuer333@126.com
 */
 #include "mainwindow.h"
@@ -53,12 +53,13 @@ int main(int argc, char *argv[])
 
     QFile file(":/skins/simpleqss.txt");
     QString stylesheetString;
+    app.setWindowIcon(QIcon(":images/sudoku.ico"));
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Open qss file failed!";
         qDebug() << file.errorString();
     } else {
         stylesheetString = file.readAll();
-        app.setStyleSheet(stylesheetString); //设置应用皮肤
+        app.setStyleSheet(stylesheetString);  // 设置应用皮肤
     }
     file.close();
 

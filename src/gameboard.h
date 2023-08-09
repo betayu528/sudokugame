@@ -1,4 +1,4 @@
-#ifndef GAMEBOARD
+﻿#ifndef GAMEBOARD
 #define GAMEBOARD
 
 #include <QWidget>
@@ -19,7 +19,7 @@ Q_SIGNALS:
     void gameOver();
 
 private slots:
-    void setup();
+    void setup(); //
     void start();
     void stop();
     void updateTimeWidget();

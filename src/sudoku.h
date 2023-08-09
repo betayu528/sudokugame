@@ -1,4 +1,4 @@
-#ifndef SUDOKU
+﻿#ifndef SUDOKU
 #define SUDOKU
 
 /**
@@ -30,8 +30,8 @@ private:
     bool parseState(int i, int j);
     void clear();
 
-    int _table[9][9];  //作为各个算法的临时变量数组
-    int _solution[9][9]; //解题答案
+    int _table[9][9];   // 作为各个算法的临时变量数组
+    int _solution[9][9]; // 解题答案
 };
 
 #endif // SUDOKU

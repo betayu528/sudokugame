@@ -1,4 +1,4 @@
-#ifndef ITEMWIDGET
+﻿#ifndef ITEMWIDGET
 #define ITEMWIDGET
 
 #include <QPushButton>

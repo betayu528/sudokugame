@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Author: by cdhmuer333@126.com
 */
 #include "gameboard.h"
@@ -39,21 +39,21 @@ void GameBoard::setup()
     lcdNumberLayout->setSpacing(0);
     QGroupBox *lcdNumberGroup = new QGroupBox;
     lcdNumberGroup->setLayout(lcdNumberLayout);
-    lcdNumberGroup->setTitle("计时器");
+    lcdNumberGroup->setTitle(QStringLiteral("计时器"));
 
     QVBoxLayout *levelLayout = new QVBoxLayout;
     levelLayout->addWidget(_levelCheckBox);
     QGroupBox *levelGroup = new QGroupBox;
-    levelGroup->setTitle("难度选择");
+    levelGroup->setTitle(QStringLiteral("难度选择"));
     levelGroup->setLayout(levelLayout);
 
     _sudoku_board = new SudokuBoard();
-    _resetGameButton = new QPushButton(tr("重置游戏"));
-    _startGameButton = new QPushButton(tr("开始游戏"));
-    _submitButon = new QPushButton("完成提交");
-    _clearAnswerButton = new QPushButton("清除答案");
-    _suspendButton = new QPushButton("暂停游戏");
-    _logoutButton = new QPushButton("退出游戏");
+    _resetGameButton = new QPushButton(QStringLiteral("重置游戏"));
+    _startGameButton = new QPushButton(QStringLiteral("开始游戏"));
+    _submitButon = new QPushButton(QStringLiteral("完成提交"));
+    _clearAnswerButton = new QPushButton(QStringLiteral("清除答案"));
+    _suspendButton = new QPushButton(QStringLiteral("暂停游戏"));
+    _logoutButton = new QPushButton(QStringLiteral("退出游戏"));
 
     connect(_resetGameButton, SIGNAL(clicked()), _sudoku_board, SLOT(resetData()));
     connect(_resetGameButton, SIGNAL(clicked()), this, SLOT(updateTimer()));
@@ -66,7 +66,7 @@ void GameBoard::setup()
     QHBoxLayout *mainLayout = new QHBoxLayout;
 
     QGroupBox *buttonsBox = new QGroupBox;
-    buttonsBox->setTitle("游戏控制");
+    buttonsBox->setTitle(QStringLiteral("游戏控制"));
     QGridLayout *buttonsLayout = new QGridLayout;
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->addWidget(_startGameButton, 0, 0);
@@ -101,9 +101,13 @@ void GameBoard::setup()
 void GameBoard::initCheckBox()
 {
     _levelCheckBox = new QComboBox();
-    _levelCheckBox->setToolTip("选择难度");
-    _levelCheckBox->addItems(QStringList() << "初级" << "中等" << "高级"
-                             << "大师" << "骨灰");
+    _levelCheckBox->setToolTip(QStringLiteral("选择难度"));
+    _levelCheckBox->addItems(QStringList()
+                             << QStringLiteral("初级")
+                             << QStringLiteral("中等")
+                             << QStringLiteral("高级")
+                             << QStringLiteral("大师")
+                             << QStringLiteral("骨灰"));
     connect(_levelCheckBox, SIGNAL(currentIndexChanged(int)), this, SLOT(switchLevel()));
 }
 
@@ -127,14 +131,14 @@ void GameBoard::start()
 void GameBoard::stop()
 {
     _pTimer->stop();
-    _startGameButton->setText("继续游戏");
+    _startGameButton->setText(QStringLiteral("继续游戏"));
     updateButtonStates();
     _sudoku_board->setEnabled(false);
 }
 
 void GameBoard::updateTimeWidget()
 {
-    QString strTime = QString(":");
+    QString strTime = QString("%:");
     strTime.push_front(QString(_iTimeMinute % 10 + '0'));
     strTime.push_front(QString((_iTimeMinute % 100) / 10 + '0'));
     strTime.push_back(QString((_iTimeSecond % 100) / 10 + '0'));
@@ -160,13 +164,13 @@ void GameBoard::updateTimer()
 void GameBoard::finished()
 {
     if (_sudoku_board->checkAnswer()) {
-        QMessageBox::information(this, "过关", "恭喜你，答对了!", QMessageBox::Ok);
+        QMessageBox::information(this, QStringLiteral("过关"), QStringLiteral("恭喜你，答对了!"), QMessageBox::Ok);
         _pTimer->stop();
-        _startGameButton->setText("再来一局");
+        _startGameButton->setText(QStringLiteral("再来一局"));
         _startGameButton->setEnabled(true);
         updateButtonStates();
     } else {
-        QMessageBox::information(this, "失败", "不对哦, 再试试看", QMessageBox::Ok);
+        QMessageBox::information(this, QStringLiteral("失败"), QStringLiteral("不对哦, 再试试看"), QMessageBox::Ok);
     }
 }
 
@@ -197,6 +201,7 @@ void GameBoard::switchLevel()
     default:
         break;
     }
+    emit _resetGameButton->clicked();
 }
 
 void GameBoard::updateButtonStates()
@@ -208,7 +213,6 @@ void GameBoard::updateButtonStates()
         _startGameButton->setEnabled(true);
         _suspendButton->setEnabled(false);
     }
-    //_resetGameButton->setEnabled(_suspendButton->isEnabled());
     _clearAnswerButton->setEnabled(_suspendButton->isEnabled());
 }
 
@@ -221,7 +225,7 @@ QFrame* GameBoard::createSeperator()
 }
 
 void GameBoard::logout() {
-    if ((QMessageBox::information(this, "提示", "你确定要退出游戏吗?",
+    if ((QMessageBox::information(this, QStringLiteral("提示"), QStringLiteral("你确定要退出游戏吗?"),
             QMessageBox::Ok | QMessageBox::Cancel))
         == QMessageBox::Ok) {
         emit gameOver(); //发出一个游戏终止的信号， 通知主窗口

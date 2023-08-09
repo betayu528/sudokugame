@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Author: by cdhmuer333@126.com
 */
 
@@ -29,7 +29,7 @@ void Sudoku::genRandom(int line[])
         line[i] = i + 1;
     }
     for (int i = 0; i < 9; ++i) {
-        int pos = rand() % (9 - i); // 随机产生一个下标， 让它和第9 - i个数字交换
+        int pos = rand() % (9 - i);  // 随机产生一个下标， 让它和第9 - i个数字交换
         if (pos == 8 - i) {
             continue;
         } else {
@@ -54,7 +54,7 @@ int Sudoku::initialState(int i, int j)
     if (i >= 9 || j >= 9)
         return 1;
 
-    int rpos[9] = {0}; //可选项要随机打乱，不然生成的局面会有规律
+    int rpos[9] = {0}; // 可选项要随机打乱，不然生成的局面会有规律
     genRandom(rpos);
     for (int k = 0; k < 9 ; ++k) {
         int can = 1;                // can 变量用于记录数字k能否放在 (i, j) 处

@@ -1,10 +1,9 @@
-/**
+﻿/**
 * Author: by cdhmuer333@126.com
 */
 
 #include "itemwidget.h"
 #include "optiondialog.h"
-
 #include <QDebug>
 
 
@@ -23,7 +22,6 @@ ItemWidget::ItemWidget(qint8 number)
     }
     QFont font = this->font();
     font.setBold(true);
-    //font.setPixelSize(20);
     setFont(font);
     adjustSize();
 }
@@ -47,6 +45,7 @@ void ItemWidget::mousePressEvent(QMouseEvent *ev)
         setValue(value);
     }
 }
+
 
 /**
  * @brief ItemWidget::setValue

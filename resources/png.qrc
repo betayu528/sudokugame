@@ -3,5 +3,6 @@
         <file>images/sudoku.ico</file>
         <file>skins/qss.txt</file>
         <file>skins/simpleqss.txt</file>
+        <file>icon.rc</file>
     </qresource>
 </RCC>

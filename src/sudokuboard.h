@@ -1,4 +1,4 @@
-#ifndef BOARD
+﻿#ifndef BOARD
 #define BOARD
 
 #include <QFrame>
@@ -28,6 +28,7 @@ public:
     void clearAnswer();
 protected:
     void paintEvent(QPaintEvent *e);
+    void keyPressEvent(QKeyEvent *e);
 
 private slots:
     void resetData();
@@ -35,16 +36,19 @@ private slots:
 
 private:
     void init();
+    ItemWidget* nextItemWidget();
 
     void initData();
 
+
     int _blankGridNum;
-    int _raw_data[9][9];//原始题目的数据
-    int _going_data[9][9];//正在解答的数据
+    int _raw_data[9][9];  //原始题目的数据
+    int _going_data[9][9];  //正在解答的数据
 
     QGridLayout *_glayout;
     Groups _groups;
     Items _items;
+    Items::iterator _current;
 
     Sudoku *_sudoku;
     Level _cur_level;

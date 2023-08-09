@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Author: by cdhmuer333@126.com
 */
 #include "sudokuboard.h"
@@ -8,6 +8,7 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QPainter>
+#include <QKeyEvent>
 #include <QDebug>
 #include <QGroupBox>
 
@@ -19,8 +20,8 @@ SudokuBoard::SudokuBoard(QWidget *parent)
     resize(420, 420);
     _blankGridNum = 15; // default setting
     _sudoku = new Sudoku();
-    setEnabled(false); //点开始游戏之后才能填入数字
-    setToolTip("请点击开始游戏, 开始挑战");
+    setEnabled(false);  // 点开始游戏之后才能填入数字
+    setToolTip(QStringLiteral("请点击开始游戏, 开始挑战"));
     _glayout = NULL;
     init();
 }
@@ -68,7 +69,17 @@ void SudokuBoard::init()
             layout->addWidget(w, i % 3, j % 3);
         }
     }
+    _current = _items.begin();
     setLayout(_glayout);
+}
+
+
+ItemWidget* SudokuBoard::nextItemWidget() {
+    if (_current == _items.end()) {
+        _current = _items.begin();
+        return nullptr;
+    }
+    return *(_current++);
 }
 
 void SudokuBoard::resetData()
@@ -133,6 +144,56 @@ void SudokuBoard::setLevel(Level level)
 void SudokuBoard::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
+}
+
+
+void SudokuBoard::keyPressEvent(QKeyEvent *ev) {
+    int key = ev->key();
+    qDebug() << key;
+    if (_current != _items.end()) {
+        (*_current)->setFocusPolicy(Qt::StrongFocus);
+        (*_current)->setFocus();
+    }
+    switch (key) {
+    case Qt::Key_0:
+    case Qt::Key_1:
+    case Qt::Key_2:
+    case Qt::Key_3:
+    case Qt::Key_4:
+    case Qt::Key_5:
+    case Qt::Key_6:
+    case Qt::Key_7:
+    case Qt::Key_8:
+    case Qt::Key_9:
+        (*_current)->setText(QString::number(key - '0'));
+        break;
+    case Qt::Key_Delete:
+
+        (*_current)->setText(QString(""));
+        break;
+    case Qt::Key_Escape:
+        setFocus(Qt::TabFocusReason);
+        break;
+    case Qt::Key_Alt :
+        //find next empty brick
+        ItemWidget *last_w = *_current;
+        QPalette p = last_w->palette();
+        while (true) {
+            ItemWidget *w = nextItemWidget();
+            if (!w) {
+                break;
+            }
+            if (w->text().isEmpty()) {
+                w->setEditable(true);
+                w->setFocus();
+                w->setStyleSheet("background:yellow");
+                break;
+            }
+            last_w->setPalette(p);
+            last_w = w;
+        }
+        break;
+    }
 }
 
 void SudokuBoard::clearAnswer()

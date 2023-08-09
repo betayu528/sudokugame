@@ -27,16 +27,22 @@ SOURCES += src/main.cpp\
 HEADERS  += src/mainwindow.h \
     src/itemwidget.h \
     src/optiondialog.h \
-    src/sudoku.h \
-    src/sudokuboard.h \
     src/gameboard.h \
-    src/loghandler.h
+    src/loghandler.h \
+    src/sudoku.h \
+    src/sudokuboard.h
 
 RESOURCES += \
     resources/png.qrc
+
+RC_FILE += \
+    resources/icon.rc
 
 FORMS += \
     resources/form.ui
 
 
 #ICON = sudoku.icns
+
+DISTFILES += \
+    resources/icon.rc
