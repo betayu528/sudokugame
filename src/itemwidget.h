@@ -1,8 +1,8 @@
 ﻿#ifndef ITEMWIDGET
 #define ITEMWIDGET
 
-#include <QPushButton>
-class ItemWidget : public QPushButton
+#include <QLineEdit>
+class ItemWidget : public QLineEdit
 {
     Q_OBJECT
 public:
@@ -14,7 +14,7 @@ public:
     void setEditable(bool editable);
 
 protected:
-    void mousePressEvent(QMouseEvent *ev);
+    //void mousePressEvent(QMouseEvent *ev);
 
 private slots:
     //void draw();

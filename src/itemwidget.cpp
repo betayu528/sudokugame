@@ -4,22 +4,31 @@
 
 #include "itemwidget.h"
 #include "optiondialog.h"
+#include <QLineEdit>
+#include <QRegularExpression>
 #include <QDebug>
-
+#include <QRegularExpressionValidator>
+#include <QLineEdit>
 
 ItemWidget::ItemWidget(qint8 number)
     :_is_editable(true)
 {
     setMaximumSize(40, 40);
-    if (number > 9 || number < 0)
-        number = 0;
-    if (number == 0) {
-        setEditable(true);
-        setText("");
-    } else {
-        setText(QString::number(number));
-        setEditable(false);
-    }
+    setAlignment(Qt::AlignCenter); // 居中
+    setStyleSheet(
+                    "QLineEdit {"
+                    "   border: 1px solid;"
+                    "   font-size: 40px;"
+                    "}"
+                    "QLineEdit:focus {"
+                    "   background-color: lightblue;"
+                    "}"
+                 );
+
+    setValidator(new QRegularExpressionValidator(QRegularExpression("[1-9]?"), this));
+
+    setValue(number, false);
+
     QFont font = this->font();
     font.setBold(true);
     setFont(font);
@@ -31,21 +40,6 @@ ItemWidget::~ItemWidget()
     qDebug() << this->objectName() << " Object destructed !";
 }
 
-void ItemWidget::mousePressEvent(QMouseEvent *ev)
-{
-    Q_UNUSED(ev)
-
-    if (!_is_editable) {
-        return;
-    }
-    OptionDialog w(this);
-    w.setModal(false);
-    if (w.exec() == QDialog::Accepted) {
-        qint8 value = w.selectValue();
-        setValue(value);
-    }
-}
-
 
 /**
  * @brief ItemWidget::setValue
@@ -55,17 +49,14 @@ void ItemWidget::mousePressEvent(QMouseEvent *ev)
  */
 void ItemWidget::setValue(qint8 number, bool reset)
 {
-    if (number > 9 || number < 0) {
-        number = 0;
-    }
-
-    if (number == 0) {
-        setText("");
-        setEditable(true);
-    } else {
-        setText(QString::number(number));
-        setEditable(!reset);
-    }
+     if (number == 0) {
+         setText("");
+         setEditable(true);
+     } else {
+         setText(QString::number(number));
+         if (!reset)
+            setEditable(false);
+     }
 }
 
 void ItemWidget::setEditable(bool editable)

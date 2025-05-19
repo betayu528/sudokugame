@@ -8,6 +8,7 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QPalette>
+#include <ctime>
 
 
 MainWindow::MainWindow(QWidget *parent)

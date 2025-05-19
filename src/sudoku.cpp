@@ -367,24 +367,20 @@ bool Sudoku::getSolution(int question[9][9], int answer[9][9])
  */
 bool Sudoku::checkSolution(int answer[9][9])
 {
-    //row check
-    for (int i = 0;i < 9; ++i) {
-        if (!isvalidOfArray(answer[i])) {
-            return false;
-        }
-    }
-
-    //reverse: 将二维数组作转置
-    int temp_array[9][9];//临时数组， 为了不改变原数组的值
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0;j < 9; ++j) {
-            temp_array[i][j] = answer[j][i];
-        }
-    }
+    int rows[9][9] = {{0}};
+    int colums[9][9] = {{0}};
+    int grid[3][3][9] = {{{0}}};
 
     for (int i = 0; i < 9; ++i) {
-        if (!isvalidOfArray(temp_array[i])) {
-            return false;
+        for (int j = 0; j < 9; ++j) {
+            int n = answer[i][j];
+
+            rows[i][n]++;
+            colums[j][n]++;
+            grid[i / 3][j / 3][n]++;
+            if (rows[i][n] > 1 || colums[j][n] > 1 || grid[i / 3][j / 3][n] > 1) {
+                return false;
+            }
         }
     }
     return true;

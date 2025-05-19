@@ -18,8 +18,7 @@ public:
         Master,
         SuperMaster
     };
-    typedef QList<ItemWidget*> Items;
-    typedef QVector<QGroupBox*> Groups;
+    typedef QVector<QVector<ItemWidget*>> ItemsArray;
     SudokuBoard(QWidget *parent = 0);
     ~SudokuBoard();
 
@@ -29,6 +28,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *e);
     void keyPressEvent(QKeyEvent *e);
+    void mousePressEvent(QMouseEvent *event);
 
 private slots:
     void resetData();
@@ -37,6 +37,12 @@ private slots:
 private:
     void init();
     ItemWidget* nextItemWidget();
+    ItemWidget *upItemWidget();
+    ItemWidget *downItemWidget();
+    ItemWidget *leftItemWidget();
+    ItemWidget *rightItemWidget();
+
+    ItemWidget* currentWidget();
 
     void initData();
 
@@ -46,9 +52,8 @@ private:
     int _going_data[9][9];  //正在解答的数据
 
     QGridLayout *_glayout;
-    Groups _groups;
-    Items _items;
-    Items::iterator _current;
+    ItemsArray _itemsArray;
+    QPair<int, int> _curPos;
 
     Sudoku *_sudoku;
     Level _cur_level;

@@ -17,12 +17,13 @@ SudokuBoard::SudokuBoard(QWidget *parent)
     :QFrame(parent)
 {
     //setStyleSheet("Board{background-color:rgb(148,248,255);;border:true;}")
-    resize(420, 420);
-    _blankGridNum = 15; // default setting
+    resize(380, 380);
+    _blankGridNum = 20; // default setting
     _sudoku = new Sudoku();
     setEnabled(false);  // 点开始游戏之后才能填入数字
-    setToolTip(QStringLiteral("请点击开始游戏, 开始挑战"));
+    setToolTip(QStringLiteral("请选择难度开始游戏"));
     _glayout = NULL;
+    setMouseTracking(true);
     init();
 }
 
@@ -40,47 +41,27 @@ void SudokuBoard::initData()
 void SudokuBoard::init()
 {
     initData();
-    _items.clear();
-    _groups.clear();
-    _glayout = new QGridLayout;
+    _itemsArray.clear();
+    _curPos = QPair<int, int>(0, 0);
 
-    for (int i = 0; i < 9; ++i) {
-        QGroupBox* group = new QGroupBox;
-        QGridLayout *layout = new QGridLayout;
-        layout->setContentsMargins(0, 0, 0, 0);
-        group->setLayout(layout);
-        _glayout->addWidget(group, i / 3 * 3, i % 3 * 3, 3, 3);
-        _groups.append(group);
-    }
-    _glayout->setSpacing(1);
+    QGridLayout *layout = new QGridLayout;
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->setAlignment(Qt::AlignCenter);
+    layout->setMargin(0);
+
+    _itemsArray = QVector<QVector<ItemWidget*>>(9, QVector<ItemWidget*>(9));
 
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
-            ItemWidget *w = new ItemWidget(_going_data[i][j]);
-            _items.append(w);
-            int pos = i / 3 * 3 + j / 3; //计算所属的3 * 3 方框在列表group中的索引
-
-            QGridLayout *layout = qobject_cast<QGridLayout*>(_groups[pos]->layout());
-            if (!layout) {
-                qDebug() << "internal error!";
-                continue;
-            }
-
-            layout->addWidget(w, i % 3, j % 3);
+            ItemWidget *w = new ItemWidget(_raw_data[i][j]);
+            _itemsArray[i][j] = w;
+            layout->addWidget(w, i, j);
         }
     }
-    _current = _items.begin();
-    setLayout(_glayout);
+    setLayout(layout);
 }
 
-
-ItemWidget* SudokuBoard::nextItemWidget() {
-    if (_current == _items.end()) {
-        _current = _items.begin();
-        return nullptr;
-    }
-    return *(_current++);
-}
 
 void SudokuBoard::resetData()
 {
@@ -90,30 +71,22 @@ void SudokuBoard::resetData()
 
 void SudokuBoard::updateItems()
 {
-    int index = 0;
-    foreach(ItemWidget *w, _items) {
-        if (!w) {
-            qDebug() << "Error, invalid pointers";
-            ++index;
-            continue;
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0;j < 9; ++j) {
+            _itemsArray[i][j]->setValue(_going_data[i][j]);
         }
-        w->setValue(_going_data[index / 9][index % 9], true);
-        ++index;
     }
 }
 
 bool SudokuBoard::checkAnswer()
 {
-    int index = 0;
-    foreach(ItemWidget *w, _items) {
-        if (!w) {
-            qDebug() << "Error, invalid pointers";
-            ++index;
-            continue;
+
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0;j < 9; ++j) {
+            _going_data[i][j] = _itemsArray[i][j]->text().toInt();
         }
-        _going_data[index / 9][index % 9] = w->text().toInt();
-        ++index;
     }
+
     return _sudoku->checkSolution(_going_data);
 }
 
@@ -146,16 +119,68 @@ void SudokuBoard::paintEvent(QPaintEvent *e)
     Q_UNUSED(e);
 }
 
+ItemWidget* SudokuBoard::upItemWidget() {
+    _curPos.first -= 1;
+    if (_curPos.first < 0)
+        _curPos.first = 8;
+
+    return currentWidget();
+}
+
+ItemWidget* SudokuBoard::downItemWidget()
+{
+    _curPos.first += 1;
+    if (_curPos.first > 8)
+        _curPos.first = 0;
+    return currentWidget();
+}
+
+ItemWidget* SudokuBoard::leftItemWidget() {
+    _curPos.second -= 1;
+    if (_curPos.second < 0)
+        _curPos.second = 8;
+    return currentWidget();
+}
+
+ItemWidget* SudokuBoard::rightItemWidget(){
+    _curPos.second += 1;
+    if (_curPos.second > 8) {
+        _curPos.second = 0;
+    }
+    return currentWidget();
+}
+
+ItemWidget* SudokuBoard::nextItemWidget(){
+    QPair<int, int> pos;
+    pos.second = _curPos.second + 1;
+    pos.first = _curPos.first;
+    if (pos.second > 8) {
+        pos.second = 0;
+        pos.first += 1;
+        if (pos.first > 8) {
+            pos.first = 0;
+        }
+    }
+
+    _curPos = pos;
+    return currentWidget();
+}
+
+ItemWidget* SudokuBoard::currentWidget() {
+    return _itemsArray[_curPos.first][_curPos.second];
+}
 
 void SudokuBoard::keyPressEvent(QKeyEvent *ev) {
     int key = ev->key();
     qDebug() << key;
-    if (_current != _items.end()) {
-        (*_current)->setFocusPolicy(Qt::StrongFocus);
-        (*_current)->setFocus();
-    }
+
+    ItemWidget * current = currentWidget();
+
+    current->setFocusPolicy(Qt::StrongFocus);
+    current->setFocus();
+
+
     switch (key) {
-    case Qt::Key_0:
     case Qt::Key_1:
     case Qt::Key_2:
     case Qt::Key_3:
@@ -165,35 +190,61 @@ void SudokuBoard::keyPressEvent(QKeyEvent *ev) {
     case Qt::Key_7:
     case Qt::Key_8:
     case Qt::Key_9:
-        (*_current)->setText(QString::number(key - '0'));
+        current->setText(QString::number(key - '0'));
         break;
     case Qt::Key_Delete:
-
-        (*_current)->setText(QString(""));
+        current->setText(QString(""));
         break;
     case Qt::Key_Escape:
         setFocus(Qt::TabFocusReason);
         break;
+    case Qt::Key_Up:
+        upItemWidget()->setFocus(Qt::MouseFocusReason);
+        break;
+
+    case Qt::Key_Left:
+        leftItemWidget()->setFocus(Qt::TabFocusReason);
+        break;
+
+    case Qt::Key_Down:
+        downItemWidget()->setFocus(Qt::TabFocusReason);
+        break;
+
+    case Qt::Key_Right:
+        rightItemWidget()->setFocus(Qt::TabFocusReason);
+        break;
+
     case Qt::Key_Alt :
         //find next empty brick
-        ItemWidget *last_w = *_current;
+        ItemWidget *last_w = current;
         QPalette p = last_w->palette();
-        while (true) {
-            ItemWidget *w = nextItemWidget();
-            if (!w) {
+
+        ItemWidget *it = nextItemWidget();
+        while (it != nullptr && it != current) {
+
+            if (!it) {
                 break;
             }
-            if (w->text().isEmpty()) {
-                w->setEditable(true);
-                w->setFocus();
-                w->setStyleSheet("background:yellow");
-                break;
+            if (it->text().isEmpty()) {
+                it->setEditable(true);
+                it->setFocus();
+                it->setStyleSheet("background:blue");
             }
             last_w->setPalette(p);
-            last_w = w;
+            last_w = it;
+            it = nextItemWidget();
         }
         break;
     }
+}
+
+void SudokuBoard::mousePressEvent(QMouseEvent *event)
+{
+    QPoint pos = event->pos();
+    qDebug() << pos.x() << pos.y();
+
+   // QGridLayout* mainLayout = qobject_cast<QGridLayout*>(this->layout());
+   // mainLayout->itemAtPosition();
 }
 
 void SudokuBoard::clearAnswer()
